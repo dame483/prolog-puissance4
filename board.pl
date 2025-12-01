@@ -1,3 +1,5 @@
+
+
 init_board(Board) :-
     Board = [[], [], [], [], [], [], []].
 display_board(Board) :-
@@ -21,10 +23,94 @@ print_cell(Col, Row) :- % Afficher une cellule
     length(Col, Height),
     ( Row =< Height -> nth1(Row, Col, Token);
       Token = '_,'
-    ),
+    [),
     write(Token).
 
-applyIt(Board, newBoard) :-
+applyIt(Board, newBoard]) :-
     retract(board(Board)),
     assert(board(newBoard)).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 

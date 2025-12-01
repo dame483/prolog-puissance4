@@ -1,6 +1,7 @@
+
 get_cell(Board, ColIndex, RowIndex, Cell) :-
     nth1(ColIndex, Board, Col),
-    nth1(RowIndex, Col, Cell).  
+    nth1(RowIndex, Col, Cell).
 
 vertical_win(Board, Player) :-
     member(Col, Board),
@@ -51,3 +52,37 @@ win(Board, Player) :-
     horizontal_win(Board, Player);
     diagonal_win_down(Board, Player);
     diagonal_win_up(Board, Player).
+
+isEmpty(Case) :- nonvar(Case).
+isFullBoard([]).
+isFullBoard([H|T]) :- isEmpty(H),isFullBoard(T).
+
+
+
+game_over(Player) :- board(Board),win(Board,Player),!.
+game_over('Draw') :- board(Board),isFullBoard(Board).
+
+outpout_winner(Player):- writeln("Le gagant est :"),writeln(Player) .
+change_player("red","blue").
+change_player("blue","red").
+play(Player) :- write("Turn of :"),writeln(Player),board(Board), displayBoard,ia(Board,Move,Player),make_move(Move,Player,Board,NewBoard),change_player(Player,NextPlayer),play(NextPlayer).
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
