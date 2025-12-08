@@ -80,16 +80,11 @@ change_player('x','o').
 change_player('o','x').
 
 insert_in_column(Player, Column, NewColumn) :-
-    append(Col, [Player], NewColumn).
+    append(Column, [Player], NewColumn).
 
-replace_column(Board, N, NewColumn, NewBoard) :-
-    same_length(Board, NewBoard),
-    nth1(N, NewBoard, NewColumn),
-    forall(
-        (nth1(Index, Board, Column), Index \= N), 
-        nth1(Index, NewBoard, Column)
-        ).
-    % copy every column in the new board (except the one we are modifying) 
+replace_column(Board, Index, NewColumn, NewBoard) :-
+    nth1(Index, Board, _, RestBoard),
+    nth1(Index, NewBoard, NewColumn, RestBoard). 
 
 ask_column(Column) :-
     writeln("Choisissez une colonne (entre 1-7) :"),
