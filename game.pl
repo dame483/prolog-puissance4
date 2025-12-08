@@ -113,11 +113,13 @@ make_move(Board, Player, NewBoard) :-
         make_move(Board, Player, NewBoard)
     ).
 
- play(Player) :-
-    board(Board), !,
-    output_board(Board), !,
-    not(game_over(Board, Player)), !,
-    make_move(Player, Board), !,
-    next_player(Player, Player2), !,
-    play(Player2), !
-    .   
+play(Player) :-
+    board(Board),
+    display_current_board,
+    (   game_over(Board, Winner)
+    ->  output_winner(Winner)
+    ;   make_move(Board, Player, NewBoard),
+        applyIt(NewBoard),
+        change_player(Player, NextPlayer),
+        play(NextPlayer)
+    ).
