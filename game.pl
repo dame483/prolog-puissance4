@@ -79,15 +79,6 @@ output_winner(Winner) :-
 change_player('x','o').
 change_player('o','x').
 
-play(Player) :-
-    board(Board), !,
-    output_board(Board), !,
-    not(game_over(Board, Player)), !,
-    make_move(Player, Board), !,
-    next_player(Player, Player2), !,
-    play(Player2), !
-    .
-
 insert_in_column(Player, Column, NewColumn) :-
     append(Col, [Player], NewColumn).
 
@@ -126,3 +117,12 @@ make_move(Board, Player, NewBoard) :-
     ;   writeln("Colonne pleine ! Choisissez une autre colonne."),
         make_move(Board, Player, NewBoard)
     ).
+
+ play(Player) :-
+    board(Board), !,
+    output_board(Board), !,
+    not(game_over(Board, Player)), !,
+    make_move(Player, Board), !,
+    next_player(Player, Player2), !,
+    play(Player2), !
+    .   
