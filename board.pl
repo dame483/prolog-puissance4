@@ -20,7 +20,7 @@ display_row([Col | Rest], Row) :- % Afficher une ligne entière en récupérant 
 print_cell(Col, Row) :- % Afficher une cellule
     length(Col, Height),
     ( Row =< Height -> nth1(Row, Col, Token);
-      Token = '_,'
+      Token = '_'
     ),
     write(Token).
 
