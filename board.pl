@@ -1,5 +1,16 @@
+:- dynamic(board/1).
+
+init_game :-
+    init_board(Board),
+    assert(board(Board)).
+
 init_board(Board) :-
     Board = [[], [], [], [], [], [], []].
+
+display_current_board :-
+    board(Board),
+    display_board(Board).
+
 display_board(Board) :-
     display_rows(Board, 6).  % on affiche par ligne et on a 6 lignes
 
@@ -24,7 +35,7 @@ print_cell(Col, Row) :- % Afficher une cellule
     ),
     write(Token).
 
-applyIt(Board, newBoard) :-
-    retract(board(Board)),
+applyIt(newBoard) :-
+    retract(board(_)),
     assert(board(newBoard)).
 
