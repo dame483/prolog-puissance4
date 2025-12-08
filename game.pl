@@ -51,3 +51,75 @@ win(Board, Player) :-
     horizontal_win(Board, Player);
     diagonal_win_down(Board, Player);
     diagonal_win_up(Board, Player).
+
+isFullColumn(Col) :-
+    length(Col, L),
+    L >= 6.
+
+isFullBoard([]).
+isFullBoard([Col|Rest]) :-
+    isFullColumn(Col),
+    isFullBoard(Rest).
+
+game_over(Board, Winner) :-
+    win(Board, Winner), 
+    !.
+
+game_over(Board, 'Draw') :-
+    isFullBoard(Board).
+
+output_winner('Draw') :-
+    writeln("La partie se termine par une :"),
+    writeln("nulle"), !.
+
+output_winner(Winner) :-
+    writeln("Le gagnant est :"),
+    writeln(Winner).
+
+change_player('x','o').
+change_player('o','x').
+
+insert_in_column(Player, Column, NewColumn) :-
+    append(Column, [Player], NewColumn).
+
+replace_column(Board, Index, NewColumn, NewBoard) :-
+    nth1(Index, Board, _, RestBoard),
+    nth1(Index, NewBoard, NewColumn, RestBoard). 
+
+ask_column(Column) :-
+    writeln("Choisissez une colonne (entre 1-7) :"),
+    read(Column),
+    integer(Column),
+    Column >= 1,
+    Column =< 7, 
+    !.
+
+ask_column(Column) :-
+    writeln("Colonne invalide ! Recommencez."),
+    ask_column(Column).
+
+valid_move(Board, Index) :-
+    nth1(Index, Board, Column),
+    length(Column, Length),
+    Length < 6.
+
+make_move(Board, Player, NewBoard) :-
+    ask_column(Column),
+    (   valid_move(Board, Column)
+    ->  nth1(Column, Board, OldColumn),
+        insert_in_column(Player, OldColumn, NewColumn),
+        replace_column(Board, Column, NewColumn, NewBoard)
+    ;   writeln("Colonne pleine ! Choisissez une autre colonne."),
+        make_move(Board, Player, NewBoard)
+    ).
+
+play(Player) :-
+    board(Board),
+    display_current_board,
+    (   game_over(Board, Winner)
+    ->  output_winner(Winner)
+    ;   make_move(Board, Player, NewBoard),
+        applyIt(NewBoard),
+        change_player(Player, NextPlayer),
+        play(NextPlayer)
+    ).

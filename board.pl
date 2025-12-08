@@ -35,7 +35,6 @@ print_cell(Col, Row) :- % Afficher une cellule
     ),
     write(Token).
 
-applyIt(newBoard) :-
+applyIt(NewBoard) :-
     retract(board(_)),
-    assert(board(newBoard)).
-
+    assert(board(NewBoard)).
