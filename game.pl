@@ -120,7 +120,7 @@ make_move(Board, Player, NewBoard) :-
     ->  nth1(Column, Board, OldColumn),
         insert_in_column(Player, OldColumn, NewColumn),
         replace_column(Board, Column, NewColumn, NewBoard)
-    ;   % normalement impossible avec minimax
+    ;   
         make_move(Board, Player, NewBoard)
     ).
 
