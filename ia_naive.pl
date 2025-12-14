@@ -37,3 +37,14 @@ random_valid_move(Board, Col) :-
     % tirer au hasard
     random_member(Col, Moves).
 
+    ia_naive_move(Board, Player, Col) :-
+    % 1. Coup gagnant
+    (   winning_move(Board, Player, Col)
+    ->  true
+    ;   change_player(Player, Opponent),
+        winning_move(Board, Opponent, Col)
+    ->  true
+    ;   random_valid_move(Board, Col)
+    ).
+
+

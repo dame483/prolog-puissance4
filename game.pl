@@ -103,19 +103,33 @@ valid_move(Board, Index) :-
     length(Column, Length),
     Length < 6.
 
+
+
+% Choix IA pour x
+choose_column(Board, 'x', Col) :-
+    ai_minimax_move(Board, 2, Col).
+
+% Choix IA pour o
+choose_column(Board, 'o', Col) :-
+     ia_naive_move(Board, 'o', Col).
+
+
 make_move(Board, Player, NewBoard) :-
-    ask_column(Column),
+    choose_column(Board, Player, Column),
     (   valid_move(Board, Column)
     ->  nth1(Column, Board, OldColumn),
         insert_in_column(Player, OldColumn, NewColumn),
         replace_column(Board, Column, NewColumn, NewBoard)
-    ;   writeln("Colonne pleine ! Choisissez une autre colonne."),
+    ;   % normalement impossible avec minimax
         make_move(Board, Player, NewBoard)
     ).
 
+
 play(Player) :-
+    writeln(['Tour de', Player]),
     board(Board),
     display_current_board,
+    sleep(1),   
     (   game_over(Board, Winner)
     ->  output_winner(Winner)
     ;   make_move(Board, Player, NewBoard),

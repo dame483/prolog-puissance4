@@ -1,20 +1,5 @@
-%mettre un jeton dans un colonne
 
-drop_token(Board, ColIndex, Player, NewBoard) :-
-    nth1(ColIndex, Board, Col),
-    length(Col, L),
-    L < 6,                                 % colonne non pleine
-    append(Col, [Player], NewCol),         % ajout en tête
-    replace(Board, ColIndex, NewCol, NewBoard).
-
-
-%remplacer une colonne dans le board
-
-replace([_|T], 1, X, [X|T]).
-replace([H|T], I, X, [H|R]) :-
-    I > 1,
-    I2 is I - 1,
-    replace(T, I2, X, R).
+:- consult(ia_naive). 
 
 
 % Définition des joueurs
@@ -82,8 +67,8 @@ better(_, _, _, Col2, V2, Col2, V2).
 
 % Coup IA 
 %---------------------------------
-ai_minimax_move(Board, Col) :-
-            MaxDepth = 2,
-            minimax(Board, 0, MaxDepth, 'x', Col, _),
-            !.
+ai_minimax_move(Board, MaxDepth, Col) :-
+    minimax(Board, 0, MaxDepth, 'x', Col, _),
+    !.
+
 % col vaut "none" si il y a un gagnant

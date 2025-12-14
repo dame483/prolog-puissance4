@@ -9,7 +9,7 @@ test(win_over_block) :-
         ['o','o','o'],
         [], [], [], [], []
     ],
-    ai_minimax_move(Board, Col),
+    ai_minimax_move(Board, 4, Col),
     assertion(Col == 1).
 
 
@@ -19,7 +19,7 @@ test(ai_wins_verticalement) :-
         ['o','o'], 
         ['x','x','x'], [], [], [], [], []
     ],
-    ai_minimax_move(Board, Col),
+    ai_minimax_move(Board, 4, Col),
     assertion(Col == 2).
 
 % Test 3 : IA a un coup gagnant horizontalement
@@ -31,7 +31,7 @@ test(ai_wins_horizontalement) :-
         ['x'], 
         [], [], []
     ],
-    ai_minimax_move(Board, Col),
+    ai_minimax_move(Board, 4, Col),
     assertion(Col == 5).
 
 % Test 4 : IA a un coup gagnant en diagonal
@@ -43,7 +43,7 @@ test(ai_wins_diagonal) :-
         ['x'], 
         [], [], []
     ],
-    ai_minimax_move(Board, Col),
+    ai_minimax_move(Board, 4, Col),
     assertion(Col == 1).
 
 % Test 5 : IA doit bloquer un coup gagnant de l’adversaire
@@ -54,7 +54,7 @@ test(block_opponent_win) :-
         ['x','o'], 
         [], [], [], []
     ],
-    ai_minimax_move(Board, Col),
+    ai_minimax_move(Board, 4, Col),
     assertion(Col == 1).
 
 
@@ -69,7 +69,7 @@ test(depth2_block_opponent) :-
     ['x','x'],      
     ['o','o','x','o','x']     
     ],
-    ai_minimax_move(Board, Col),
+    ai_minimax_move(Board, 4, Col),
     assertion(Col == 6).
 
 % Test 7 : 
@@ -83,7 +83,7 @@ test(depth2) :-
     ['x','x'],      
     ['o','o','x','o','x','x']     
     ],
-    ai_minimax_move(Board, Col),
+    ai_minimax_move(Board, 4, Col),
     assertion(Col == 6).
 
 % Test 8 : 
@@ -97,20 +97,63 @@ test(depth2_bis) :-
         ['o','o','x','x','o','x'],                   
         ['x','o','x','o','o','x']               
     ],
-    ai_minimax_move(Board, Col),
+    ai_minimax_move(Board, 4, Col),
     assertion(Col == 3).
 
+% Test 9 : 
+test(depth2_bis) :-
+   Board = [
+    ['o','o'],      
+    ['x','o'],      
+    ['o','x','o','o'],     
+    ['o','o','o'],   
+    ['o','x','x'],      
+    ['x','o','x','x','x','o'],      
+    ['x','x','x','o','x','x']     
+    ],
+    ai_minimax_move(Board, 2, Col),
+    assertion(Col == 4).
+
+
+% Test 10 : 
+test(depth4_bis) :-
+   Board = [
+    ['o','o'],      
+    ['x','o'],      
+    ['o','x','o','o'],     
+    ['o','o','o'],   
+    ['o','x','x'],      
+    ['x','o','x','x','x','o'],      
+    ['x','x','x','o','x','x']     
+    ],
+    ai_minimax_move(Board, 4, Col),
+    assertion(Col == 5).
+
+
+% Test 11 : 
+test(depth2_bis) :-
+   Board = [
+    [],      
+    ['o'],      
+    ['o'],     
+    ['o'],   
+    [],      
+    ['o','o','x'],      
+    ['x','x','x','o','x','x']     
+    ],
+    ai_minimax_move(Board, 2, Col),
+    assertion(Col == 6).
 
 :- end_tests(minimax_tests).
 
 test_board_non_fini([
-    ['x','o','x'],      
-    ['o','o','o','x','o','x'],      
-    ['o','x','o','x'],     
-    ['x','x'],   
-    ['o','o','x','o','x','o'],      
-    ['x','x','x','o'],      
-    ['o','o','x','o','x','x']     
+    ['o','o'],      
+    ['x','o'],      
+    ['o','x','o','o'],     
+    ['o','o','o','o'],   
+    ['o','x','x','x'],      
+    ['x','o','x','x','x','o'],      
+    ['x','x','x','o','x','x']     
     ]).
 
 % ?- test_board_non_fini(B), game_over(B,Winner).
