@@ -1,84 +1,120 @@
-test_board_non_fini([
+:- use_module(library(plunit)).     % au chargement du fichier charge la bibliothèque de tests unitaires plunit
+
+:- begin_tests(minimax_tests).
+
+% Test 1 : si IA a un coup gagnant et adversaire menace de gagner -> IA choisit coup gagnant
+test(win_over_block) :-
+    Board = [
+        ['x','x','x'],
+        ['o','o','o'],
+        [], [], [], [], []
+    ],
+    ai_minimax_move(Board, Col),
+    assertion(Col == 1).
+
+
+% Test 2 : IA peut gagner immédiatement -> choisit le coup gagnant
+test(ai_wins_verticalement) :-
+    Board = [
+        ['o','o'], 
+        ['x','x','x'], [], [], [], [], []
+    ],
+    ai_minimax_move(Board, Col),
+    assertion(Col == 2).
+
+% Test 3 : IA a un coup gagnant horizontalement
+test(ai_wins_horizontalement) :-
+    Board = [
+        ['o','o','o'], 
+        ['x','x'], 
+        ['x','o'], 
+        ['x'], 
+        [], [], []
+    ],
+    ai_minimax_move(Board, Col),
+    assertion(Col == 5).
+
+% Test 4 : IA a un coup gagnant en diagonal
+test(ai_wins_diagonal) :-
+    Board = [
+        ['o','o','o'], 
+        ['o','x','x'], 
+        ['o','x'], 
+        ['x'], 
+        [], [], []
+    ],
+    ai_minimax_move(Board, Col),
+    assertion(Col == 1).
+
+% Test 5 : IA doit bloquer un coup gagnant de l’adversaire
+test(block_opponent_win) :-
+    Board = [
+        ['o','o','o'], 
+        ['x','x'], 
+        ['x','o'], 
+        [], [], [], []
+    ],
+    ai_minimax_move(Board, Col),
+    assertion(Col == 1).
+
+
+% Test 6 : En profondeur 2 : IA choisit colonne 6 car colonne 5 et 7 prévoit victoire de adversaire
+test(depth2_block_opponent) :-
+    Board = [
     ['x','x','x','o','x','x'],      
     ['o','o','o','x','o','o'],      
     ['o','x','o','x','o','x'],     
-    ['x','x','o','x','x','o'],   
+    ['x','x','o','x','o','o'],   
     ['o','o','x','o','x'],      
-    ['x','x', 'o'],      
-    ['o','o','o']     
-]).
+    ['x','x'],      
+    ['o','o','x','o','x']     
+    ],
+    ai_minimax_move(Board, Col),
+    assertion(Col == 6).
+
+% Test 7 : 
+test(depth2) :-
+    Board = [
+    ['x','o','x'],      
+    ['o','o','o','x','o','x'],      
+    ['o','x','o','x'],     
+    ['x','x'],   
+    ['o','o','x','o','x','o'],      
+    ['x','x'],      
+    ['o','o','x','o','x','x']     
+    ],
+    ai_minimax_move(Board, Col),
+    assertion(Col == 6).
+
+% Test 8 : 
+test(depth2_bis) :-
+   Board = [
+        ['x','o','x','o','o','o'],           
+        ['o','o','x'],               
+        ['x','x'],               
+        ['x','x','o'],          
+        ['x','x','o','o','o','x'],                   
+        ['o','o','x','x','o','x'],                   
+        ['x','o','x','o','o','x']               
+    ],
+    ai_minimax_move(Board, Col),
+    assertion(Col == 3).
+
+
+:- end_tests(minimax_tests).
+
+test_board_non_fini([
+    ['x','o','x'],      
+    ['o','o','o','x','o','x'],      
+    ['o','x','o','x'],     
+    ['x','x'],   
+    ['o','o','x','o','x','o'],      
+    ['x','x','x','o'],      
+    ['o','o','x','o','x','x']     
+    ]).
+
+% ?- test_board_non_fini(B), game_over(B,Winner).
 
 
 
 
-
-% Définition des joueurs
-%---------------------------------
-max_player('x').   % l’IA
-min_player('o').   % l’humain
-
-
-utility(Board, 100) :- win(Board, 'x'), !.
-utility(Board, -100) :- win(Board, 'o'), !.
-utility(_, 0).
-
-
-
-% Coups valides
-%---------------------------------
-valid_moves(Board, Moves) :-
-    findall(Col,
-        (between(1,7,Col),
-         nth1(Col, Board, Column),
-         length(Column, L),
-         L < 6),
-        Moves).
-
-
-% Minimax principal 
-%---------------------------------
-minimax(Board, Depth, MaxDepth, _, none, Value) :-
-    % Si partie terminée ou profondeur max atteinte
-    (win(Board, 'x') ; win(Board, 'o') ; Depth >= MaxDepth),
-    utility(Board, Value),
-    !.
-
-minimax(Board, Depth, MaxDepth, Player, BestCol, Value) :-
-    Depth < MaxDepth,
-    valid_moves(Board, Moves),
-    Moves \= [],
-    D2 is Depth + 1,
-    evaluate_moves(Board, D2, MaxDepth, Player, Moves, BestCol, Value).
-
-
-
-% Évaluation des coups possibles 
-%---------------------------------
-evaluate_moves(Board, Depth, MaxDepth, Player, [Col], Col, Value) :-
-    !,  
-    drop_token(Board, Col, Player, NewBoard),
-    change_player(Player, Next),
-    minimax(NewBoard, Depth, MaxDepth, Next, _, Value).
-
-evaluate_moves(Board, Depth, MaxDepth, Player, [Col|Rest], BestCol, BestValue) :-
-    drop_token(Board, Col, Player, NewBoard),
-    change_player(Player, Next),
-    minimax(NewBoard, Depth, MaxDepth, Next, _, Value1),
-    evaluate_moves(Board, Depth, MaxDepth, Player, Rest, Col2, Value2),
-    better(Player, Col, Value1, Col2, Value2, BestCol, BestValue).
-
-
-% Comparaison de coups
-%---------------------------------
-better('x', Col1, V1, _, V2, Col1, V1) :- V1 > V2, !.
-better('o', Col1, V1, _, V2, Col1, V1) :- V1 < V2, !.
-better(_, _, _, Col2, V2, Col2, V2).
-
-
-% Coup IA 
-%---------------------------------
-ai_minimax_move(Board, Col) :-
-            MaxDepth = 2,
-            minimax(Board, 0, MaxDepth, 'x', Col, _),
-            !.
-% col vaut "none" si il y a un gagnant
