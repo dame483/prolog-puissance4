@@ -1,3 +1,6 @@
+:- consult(board). 
+:- consult(ia_minimax). 
+
 get_cell(Board, ColIndex, RowIndex, Cell) :-
     nth1(ColIndex, Board, Col),
     nth1(RowIndex, Col, Cell).  
@@ -114,7 +117,7 @@ valid_move(Board, Index) :-
 
 % Choix IA pour x
 choose_column(Board, 'x', Col) :-
-    ai_minimax_move(Board, 2, Col).
+    ai_minimax_move(Board, 4, Col).
 
 % Choix IA pour o
 choose_column(Board, 'o', Col) :-
