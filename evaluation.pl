@@ -18,8 +18,7 @@ positional_score(Board, Player, Score) :-
           get_cell(Weights, Col, Row, W)
         ),
         Ws),
-    sum_list(Ws, Raw),
-    Score is min(5, Raw).
+    sum_list(Ws, Score).
 
 /* --- Tactical score --- */
 
