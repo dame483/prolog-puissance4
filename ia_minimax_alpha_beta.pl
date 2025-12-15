@@ -2,6 +2,8 @@
 :- consult('evaluation.pl').
 :- consult('game.pl').
 
+:- discontiguous minimax_ab/8.
+
 /* ===========================
    JOUEURS
    =========================== */

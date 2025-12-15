@@ -1,3 +1,17 @@
+/* --- Cell access helper --- */
+cell(Board, ColIndex, RowIndex, Cell) :-
+    nth1(ColIndex, Board, Col),
+    (RowIndex > 0 ->
+        (   RowIndex =< 6 ->
+            (length(Col, H), RowIndex =< H ->
+                nth1(RowIndex, Col, Cell)
+            ;   Cell = empty
+            )
+        ;   Cell = empty
+        )
+    ;   Cell = empty
+    ).
+
 /* --- Positional score --- */
 weights([
     [0.1, 0.15, 0.2, 0.2, 0.15, 0.1],
