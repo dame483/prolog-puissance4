@@ -28,10 +28,10 @@ dir( 1, 1).
 dir( 1,-1).   
 
 window4(Board, X, Y, DX, DY, [C1,C2,C3,C4]) :-
-    get_cell(Board, X, Y, C1),
-    X2 is X+DX, Y2 is Y+DY, get_cell(Board, X2, Y2, C2),
-    X3 is X+2*DX, Y3 is Y+2*DY, get_cell(Board, X3, Y3, C3),
-    X4 is X+3*DX, Y4 is Y+3*DY, get_cell(Board, X4, Y4, C4).
+    cell(Board, X, Y, C1),
+    X2 is X+DX, Y2 is Y+DY, cell(Board, X2, Y2, C2),
+    X3 is X+2*DX, Y3 is Y+2*DY, cell(Board, X3, Y3, C3),
+    X4 is X+3*DX, Y4 is Y+3*DY, cell(Board, X4, Y4, C4).
 
 
 window_stats(Player, Window, Count, Free) :-
@@ -53,7 +53,7 @@ tactical_score(Board, Player, Score) :-
         (
             between(1,7,X),
             between(1,6,Y),
-            get_cell(Board, X, Y, Player),
+            cell(Board, X, Y, Player),
             dir(DX,DY),
             window4(Board, X, Y, DX, DY, Window),
             window_stats(Player, Window, Count, Free),
