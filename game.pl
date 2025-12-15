@@ -3,7 +3,15 @@
 
 get_cell(Board, ColIndex, RowIndex, Cell) :-
     nth1(ColIndex, Board, Col),
-    nth1(RowIndex, Col, Cell).  
+    nth1(RowIndex, Col, Cell). 
+
+% use get_cell but returns empty if the cell is empty (instead of false)
+cell(Board, Col, Row, Cell) :-
+    get_cell(Board, Col, Row, Cell), !.
+cell(Board, Col, Row, empty) :-
+    nth1(Col, Board, Column),
+    length(Column, L),
+    Row > L.  
 
 % take N elements from a list
 take(0, _, []).
