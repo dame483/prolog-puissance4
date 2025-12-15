@@ -33,7 +33,6 @@ window4(Board, X, Y, DX, DY, [C1,C2,C3,C4]) :-
     X3 is X+2*DX, Y3 is Y+2*DY, cell(Board, X3, Y3, C3),
     X4 is X+3*DX, Y4 is Y+3*DY, cell(Board, X4, Y4, C4).
 
-
 window_stats(Player, Window, Count, Free) :-
     include(==(Player), Window, Ps),
     length(Ps, Count),
@@ -59,6 +58,7 @@ tactical_score(Board, Player, Score) :-
             window_stats(Player, Window, Count, Free),
             Count + Free >= 4,
             window_score(Count, Free, S),
+            % write(Window), write(" : "), write(S), nl,
             S > 0
         ),
         Scores),

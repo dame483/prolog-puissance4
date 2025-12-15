@@ -114,11 +114,11 @@ ask_column(Column) :-
     ask_column(Column).
 
 valid_move(Board, Index) :-
+    Index >= 1,
+    Index =< 7,            
     nth1(Index, Board, Column),
     length(Column, Length),
-    Length < 6.
-
-
+    Length < 6. 
 
 % Choix IA pour x
 choose_column(Board, 'x', Col) :-
