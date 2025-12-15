@@ -11,7 +11,15 @@ cell(Board, Col, Row, Cell) :-
 cell(Board, Col, Row, empty) :-
     nth1(Col, Board, Column),
     length(Column, L),
-    Row > L.  
+    Row > L. 
+
+% use cell but returns out if the cell is not valid
+cell_safe(Board, X, Y, Content) :-
+    (between(1,7,X), between(1,6,Y) ->
+        cell(Board, X, Y, Content)
+    ;
+        Content = out
+    ). 
 
 % take N elements from a list
 take(0, _, []).
