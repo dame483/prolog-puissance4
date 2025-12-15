@@ -7,6 +7,14 @@
 max_player('x').   % l’IA
 min_player('o').   % l’humain
 
+/* % Ancienne fonction utility
+
+utility(Board, 100) :- win(Board, 'x'), !.
+utility(Board, -100) :- win(Board, 'o'), !.
+utility(_, 0).
+
+*/
+
 
 utility(Board, Value) :-
     evaluate(Board, 'x', ScoreX),
