@@ -1,6 +1,6 @@
 
 :- consult(ia_naive). 
-
+:- consult(evaluation). 
 
 % Définition des joueurs
 %---------------------------------
