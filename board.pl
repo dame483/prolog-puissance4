@@ -1,8 +1,10 @@
 :- dynamic(board/1).
 
 init_game :-
-    init_board(Board),
-    assert(board(Board)).
+    retractall(board(_)),     
+    init_board(Board),        
+    assert(board(Board)).     
+
 
 init_board(Board) :-
     Board = [[], [], [], [], [], [], []].
@@ -10,6 +12,7 @@ init_board(Board) :-
 display_current_board :-
     board(Board),
     display_board(Board).
+
 
 display_board(Board) :-
     display_rows(Board, 6).  % on affiche par ligne et on a 6 lignes

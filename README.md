@@ -27,3 +27,20 @@ Le projet consiste à créer une IA qui joue à Puissance 4 en prolog.
    ```
 
 Cela affichera un plateau vide de Puissance 4 avec 7 colonnes et 6 lignes.
+
+## Tests unitaires avec PLUnit
+
+1. **Vérifier que PLUnit est disponible** :
+```prolog
+   ?- use_module(library(plunit)).
+```
+
+2. **Charger les fichiers de tests** :
+```prolog
+   ?- [test/test_ia_v2].
+```
+
+3. **Lancer tous les tests** :
+```prolog
+   ?- run_tests.
+```
