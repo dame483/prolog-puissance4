@@ -26,7 +26,7 @@ simulate(0, []) :- !.
 simulate(N, [R|Rs]) :-
     N > 0,
     /*random_member(FirstPlayer, ['x','o']),*/
-    play_init('x', R),
+    play_init('o', R),
     /*writeln(["Match num:", N]),*/
     N1 is N - 1,
     simulate(N1, Rs).

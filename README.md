@@ -1,5 +1,5 @@
 # prolog-puissance4
-Le projet consiste à créer une IA qui joue à Puissance 4 en prolog. 
+Le projet consiste à créer une IA qui joue à Puissance 4 en prolog.
 
 ## Prérequis
 - SWI-Prolog doit être installé sur votre système
@@ -11,22 +11,28 @@ Le projet consiste à créer une IA qui joue à Puissance 4 en prolog.
    swipl
    ```
 
-2. **Chargez le fichier board.pl** :
+2. **Choisissez la version de l’IA** en modifiant le prédicat `choose_column/3` dans le fichier game.pl :
    ```prolog
-   ?- [board].
+   % Choix IA pour x
+   choose_column(Board, 'x', Col)
+
+   % Choix IA pour o
+   choose_column(Board, 'o', Col)
    ```
 
-3. **Initialisez le plateau** :
+3. **Chargez le fichier de lancement du jeu** :
    ```prolog
-   ?- init_board(Board).
+   ?- [game].
+   ```
+4. **Initialisez le jeu** :
+   ```prolog
+   ?- init_game.
+   ```
+4. **Lancez le jeu avec le premier joueur de votre choix** :
+   ```prolog
+   ?- play('x').
    ```
 
-4. **Affichez le plateau** :
-   ```prolog
-   ?- init_board(Board), display_board(Board).
-   ```
-
-Cela affichera un plateau vide de Puissance 4 avec 7 colonnes et 6 lignes.
 
 ## Tests unitaires avec PLUnit
 
@@ -37,7 +43,7 @@ Cela affichera un plateau vide de Puissance 4 avec 7 colonnes et 6 lignes.
 
 2. **Charger les fichiers de tests** :
 ```prolog
-   ?- [test/test_ia_v2].
+   ?- [test/nom_du_test].
 ```
 
 3. **Lancer tous les tests** :
