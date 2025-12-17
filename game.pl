@@ -131,13 +131,16 @@ valid_move(Board, Index) :-
 
 
 
-% Choix IA pour x
+% Choix IA/Humain pour x
 choose_column(Board, 'x', Col) :-
-    ai_minimax_move(Board, 4, Col).
+   ai_minimax_move(Board, 4, Col).  %%% choose column pour choisir les joueurs
+   %ask_column(Col).
 
-% Choix IA pour o
+
+% Choix IA/humain pour o
 choose_column(Board, 'o', Col) :-
-     ia_naive_move(Board, 'o', Col).
+     %ia_naive_move(Board, 'o', Col).
+     ask_column(Col).                %%% choose column pour choisir les joueurs
 
 
 make_move(Board, Player, NewBoard) :-
