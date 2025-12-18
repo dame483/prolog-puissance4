@@ -1,5 +1,5 @@
 :- use_module(library(plunit)).     % au chargement du fichier charge la bibliothèque de tests unitaires plunit
-
+:- consult(game).
 :- begin_tests(evaluation_tests).
 
 % Test 1 

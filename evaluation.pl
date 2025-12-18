@@ -1,4 +1,4 @@
-/* --- Positional score --- */
+% Definition de la matrice de poids : score positionnel
 weights([
     [0.1, 0.15, 0.2, 0.2, 0.15, 0.1],
     [0.15, 0.25, 0.35, 0.35, 0.25, 0.15],
@@ -9,7 +9,7 @@ weights([
     [0.1, 0.15, 0.2, 0.2, 0.15, 0.1]
 ]).
 
-/* positional_score/3 : Compute positional score for a player */
+% Calcule le score d’un joueur selon ses positions sur le plateau
 positional_score(Board, Player, Score) :-
     weights(Weights),
     findall(W,
@@ -21,18 +21,18 @@ positional_score(Board, Player, Score) :-
         Ws),
     sum_list(Ws, Score).
 
-/* --- Tactical score --- */
 
+% Directions dans lesquelles on regarde pour aligner des pions
 dir(1, 0).   
 dir(0, 1).   
 dir(1, 1).   
 dir(1,-1).   
 
 
-/* window/9 : Get a window in a direction (DX,DY) with a Player in the head */
+% Récupére une fenêtre dans une direction donnée où le joueur a au moins un pion au début
 window(Board, X, Y, DX, DY, Player, Length, FreeLeft, FreeRight) :-
     cell(Board, X, Y, Player),
-    /* Ensure the Player is in the head of the window */
+    /* On s'assure que le pion du joueur est au début de la fenêtre */
     XPrev is X - DX, 
     YPrev is Y - DY,
     cell_safe(Board, XPrev, YPrev, Before),
@@ -41,17 +41,17 @@ window(Board, X, Y, DX, DY, Player, Length, FreeLeft, FreeRight) :-
     count_consecutive(Board, X, Y, DX, DY, Player, Length),
     Length > 0,
     
-    /* Count free spaces before and after the window */
+    /* Compter les espaces libres */
     count_free_spaces(Board, XPrev, YPrev, -DX, -DY, Player, FreeLeft),
     XEnd is X + Length*DX, 
     YEnd is Y + Length*DY,
     count_free_spaces(Board, XEnd, YEnd, DX, DY, Player, FreeRight),
 
-    /* Ensure the window is big enough to make a connect-4*/
+    /* Vérifier que la fenêtre peut devenir un alignement de 4 pions */
     TotalLength is Length + FreeLeft + FreeRight,
     TotalLength >= 4.
 
-/* count_consecutive/7 : Get the number of consecutive Player's pieces in a direction */
+% Obtenir le nombre de pièces consécutives du joueur dans une direction
 count_consecutive(Board, X, Y, DX, DY, Player, Count) :-
     cell_safe(Board, X, Y, Player),
     !,
@@ -61,15 +61,17 @@ count_consecutive(Board, X, Y, DX, DY, Player, Count) :-
     Count is RestCount + 1.
 count_consecutive(_, _, _, _, _, _, 0).
 
-/* count_free_spaces/7 : Count the number of free spaces in a direction */
+
+
+% Compter le nombre de cases libres dans une direction 
 count_free_spaces(Board, X, Y, DX, DY, Player, Count) :-
     count_free_spaces_limited(Board, X, Y, DX, DY, Player, 0, Count).
 
-/* count_free_spaces_limited/8 : Used in count_free_spaces 
-Move along a direction and count how many empty spaces there are before encountering:
-- the edge of the board (out)
-- a player's piece
-- or an opponent's piece
+/* Utilisé dans count_free_spaces 
+Se déplacer dans une direction et compter combien de cases vides se trouvent avant de rencontrer :
+- le bord du plateau (out)
+- une pièce du joueur
+- ou une pièce de l’adversaire
 */
 count_free_spaces_limited(Board, X, Y, DX, DY, Player, Acc, Count) :-
     cell_safe(Board, X, Y, Cell),
@@ -86,7 +88,7 @@ count_free_spaces_limited(Board, X, Y, DX, DY, Player, Acc, Count) :-
         Count = Acc
     ).
 
-/* window_score/4 : Compute the score for a window (ensure that a window will be big enough to score points)*/
+% Calculer le score pour une fenêtre (vérifier fenêtre suffisamment grande pour marquer des points)
 window_score(Length, FreeLeft, FreeRight, Score) :-
     NeededSpaces is 4 - Length,
     
@@ -102,7 +104,7 @@ window_score(Length, FreeLeft, FreeRight, Score) :-
     
     calculate_score(Length, TotalFree, TwoSides, Score).
 
-/* Tactical score rules */
+% Règles de score tactique
 calculate_score(4, _, _, 100) :- !.
 calculate_score(3, TotalFree, true, 20) :- TotalFree >= 1, !.  
 calculate_score(3, TotalFree, false, 3) :- TotalFree >= 1, !.  
@@ -110,7 +112,7 @@ calculate_score(2, TotalFree, true, 2) :- TotalFree >= 2, !.
 calculate_score(2, TotalFree, false, 1) :- TotalFree >= 2, !.  
 calculate_score(_, _, _, 0).
 
-/* tactical_score/3 : Compute tactical score for a player */
+% Calculer le score tactique pour un joueur
 tactical_score(Board, Player, Score) :-
     findall(S,
         (
@@ -125,7 +127,7 @@ tactical_score(Board, Player, Score) :-
     sum_list(Scores, Score).
 
 
-/* evaluate/3 - Board evaluation function */
+% Fonction d’évaluation du plateau 
 evaluate(Board, Player, Score) :-
     positional_score(Board, Player, PosScore),
     tactical_score(Board, Player, TacScore),

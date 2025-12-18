@@ -24,7 +24,7 @@ Le projet consiste à créer une IA qui joue à Puissance 4 en prolog.
    ```prolog
    ?- [game].
    ```
-4. **Initialisez le jeu** :
+4. **Initialisez le jeu ou recharger le plateau initial** :
    ```prolog
    ?- init_game.
    ```
@@ -46,7 +46,24 @@ Le projet consiste à créer une IA qui joue à Puissance 4 en prolog.
    ?- [test/nom_du_test].
 ```
 
-3. **Lancer tous les tests** :
+3. **Lancer tous les tests chargées** :
 ```prolog
    ?- run_tests.
 ```
+
+## Génération de statistique de matchs
+
+1. **Charger le fichier de statistiques** :
+```prolog
+   ?- [stats].
+```
+
+2. **Lancer le nombre de tests souhaités (fixer N)**
+```prolog
+   ?- run(N).
+```
+Les adversaires sont toujours choisis via le prédicat `choose_column/3` dans le fichier game.pl .
+
+
+Lien Git : https://github.com/dame483/prolog-puissance4.git
+

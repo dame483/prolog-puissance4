@@ -112,17 +112,17 @@ replace_column(Board, Index, NewColumn, NewBoard) :-
     nth1(Index, Board, _, RestBoard),
     nth1(Index, NewBoard, NewColumn, RestBoard). 
 
-ask_column(Column) :-
+ask_column(Col) :-
     writeln("Choisissez une colonne (entre 1-7) :"),
-    read(Column),
-    integer(Column),
-    Column >= 1,
-    Column =< 7, 
+    read(Col),
+    integer(Col),
+    Col >= 1,
+    Col =< 7, 
     !.
 
-ask_column(Column) :-
+ask_column(Col) :-
     writeln("Colonne invalide ! Recommencez."),
-    ask_column(Column).
+    ask_column(Col).
 
 valid_move(Board, Index) :-
     nth1(Index, Board, Column),
@@ -138,6 +138,7 @@ choose_column(Board, 'x', Col) :-
 % Choix IA pour o
 choose_column(Board, 'o', Col) :-
      ia_naive_move(Board, 'o', Col).
+     % ask_column(Col).
 
 
 make_move(Board, Player, NewBoard) :-

@@ -1,6 +1,8 @@
-% Plateau où un coup gagnant existe pour 'x'
+:- use_module(library(plunit)).
+:- consult(game).  
+
 test_board_win([
-    ['x','x'],  % colonne 1 : l'IA peut gagner ici
+    ['x','x'],  
     ['o','o'],          
     ['x','x','x'],             
     ['o','o'], 
@@ -9,7 +11,6 @@ test_board_win([
     []
 ]).
 
-% Plateau où aucun coup gagnant n'existe pour 'x'
 test_board_no_win([
     ['x','x','x'],  
     ['o','x'],      
@@ -20,38 +21,34 @@ test_board_no_win([
     []              
 ]).
 
-% ------------------------
-% Test winning_move/3
-% ------------------------
-test_winning_move :-
-    % Plateau où un coup gagnant existe pour x
+
+% Tests pour winning_move/3
+%------------------------------------------------
+:- begin_tests(winning_move_tests).
+
+test(winning_move_x_win, true(Colx == 3)) :-
     test_board_win(B1),
+    winning_move(B1, 'x', Colx),
+    ! .
 
-    (winning_move(B1, 'x', Colx) ->
-        format("Plateau 1 : coup gagnant reconnu pour x en colonne ~w~n", [Colx]);
-        writeln("Plateau 1 : aucun coup gagnant reconnu pour x !")
-    ),
-
-    (winning_move(B1, 'o', Colo) ->
-        format("Plateau 1 : coup gagnant reconnu pour o en colonne ~w~n", [Colo]);
-        writeln("Plateau 1 : aucun coup gagnant reconnu pour o !")
-    ),
-
-    % Plateau où un coup gagnant existe pour x
+test(winning_move_o_no_win) :-
     test_board_no_win(B2),
+    winning_move(B2, 'o', _),
+    ! .
 
-    (winning_move(B2, 'x', Colx2) ->
-        format("Plateau 2 : coup gagnant reconnu pour x en colonne ~w~n", [Colx2]);
-        writeln("Plateau 2 : aucun coup gagnant reconnu pour x !")
-    ),
+test(winning_move_x_no_win) :-
+    test_board_no_win(B2),
+    winning_move(B2, 'x', _),
+    ! .
 
-    (winning_move(B2, 'o', Colo2) ->
-        format("Plateau 2 : coup gagnant reconnu pour o en colonne ~w~n", [Colo2]);
-        writeln("Plateau 2 : aucun coup gagnant reconnu pour o !")
-    ).
+:- end_tests(winning_move_tests).
 
-test_random_move :-
-    % exemple de plateau
+
+% Tests pour random_valid_move/2
+%------------------------------------------------
+:- begin_tests(random_move_tests).
+
+test(random_move_valid, [true(L < 6)]) :-
     Board = [
         ['x','o'], 
         ['x','o','x','x','o','x'], 
@@ -60,9 +57,7 @@ test_random_move :-
         [], [], []    
     ],
     random_valid_move(Board, Col),
-    format("Colonne choisie par random_valid_move : ~w~n", [Col]),
     nth1(Col, Board, Column),
-    length(Column, L),
-    L < 6,          % vérifie que la colonne n'est pas pleine
-    writeln("TEST OK : colonne valide sélectionnée").
+    length(Column, L).
 
+:- end_tests(random_move_tests).
