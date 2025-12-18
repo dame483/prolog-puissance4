@@ -1,6 +1,4 @@
-%mettre un jeton dans un colonne
-
-drop_token(Board, ColIndex, Player, NewBoard) :-
+drop_token(Board, ColIndex, Player, NewBoard) :-     % mettre un jeton dans un colonne
     nth1(ColIndex, Board, Col),
     length(Col, L),
     L < 6,                                 % colonne non pleine
@@ -8,8 +6,8 @@ drop_token(Board, ColIndex, Player, NewBoard) :-
     replace(Board, ColIndex, NewCol, NewBoard).
 
 
-%remplacer une colonne dans le board
 
+% remplacer une colonne dans le board
 replace([_|T], 1, X, [X|T]).
 replace([H|T], I, X, [H|R]) :-
     I > 1,
@@ -25,7 +23,7 @@ winning_move(Board, Player, Col) :-
     win(NewBoard, Player).
 
 
-%move valide random
+% move valide random
 
 random_valid_move(Board, Col) :- 
     findall(C,
@@ -38,7 +36,7 @@ random_valid_move(Board, Col) :-
     random_member(Col, Moves).
 
     ia_naive_move(Board, Player, Col) :-
-    % 1. Coup gagnant
+    % Coup gagnant
     (   winning_move(Board, Player, Col)
     ->  true
     ;   change_player(Player, Opponent),

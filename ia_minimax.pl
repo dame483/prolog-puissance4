@@ -2,10 +2,6 @@
 :- consult(ia_naive). 
 :- consult(evaluation). 
 
-% Définition des joueurs
-%---------------------------------
-max_player('x').   % l’IA
-min_player('o').   % l’humain
 
 /* % Ancienne fonction utility
 
@@ -20,6 +16,7 @@ utility(Board, Value) :-
     evaluate(Board, 'x', ScoreX),
     evaluate(Board, 'o', ScoreO),
     Value is ScoreX - ScoreO.
+
 
 % Coups valides
 %---------------------------------
@@ -74,8 +71,7 @@ better(_, _, _, Col2, V2, Col2, V2).
 
 % Coup IA 
 %---------------------------------
-ai_minimax_move(Board, MaxDepth, Col) :-
+ai_minimax_move(Board, MaxDepth, Col) :-   % col vaut "none" si il y a un gagnant
     minimax(Board, 0, MaxDepth, 'x', Col, _),
     !.
 
-% col vaut "none" si il y a un gagnant

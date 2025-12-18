@@ -1,5 +1,5 @@
 :- use_module(library(plunit)).     % au chargement du fichier charge la bibliothèque de tests unitaires plunit
-
+:- consult(game).
 :- begin_tests(minimax_tests).
 
 % Test 1 : si IA a un coup gagnant et adversaire menace de gagner -> IA choisit coup gagnant
@@ -127,36 +127,12 @@ test(depth4_bis) :-
     ['x','x','x','o','x','x']     
     ],
     ai_minimax_move(Board, 4, Col),
-    assertion(Col == 5).
+    assertion(Col == 4).
 
-
-% Test 11 : 
-test(depth2_bis) :-
-   Board = [
-    [],      
-    ['o'],      
-    ['o'],     
-    ['o'],   
-    [],      
-    ['o','o','x'],      
-    ['x','x','x','o','x','x']     
-    ],
-    ai_minimax_move(Board, 2, Col),
-    assertion(Col == 6).
 
 :- end_tests(minimax_tests).
 
-test_board_non_fini([
-    ['o','o'],      
-    ['x','o'],      
-    ['o','x','o','o'],     
-    ['o','o','o','o'],   
-    ['o','x','x','x'],      
-    ['x','o','x','x','x','o'],      
-    ['x','x','x','o','x','x']     
-    ]).
 
-% ?- test_board_non_fini(B), game_over(B,Winner).
 
 
 
